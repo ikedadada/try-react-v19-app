@@ -1,0 +1,1 @@
+export { MetadataAfterHoisting } from "./deepMetadataComponent";

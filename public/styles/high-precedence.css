@@ -1,0 +1,16 @@
+:root {
+  --react-19-demo-accent: #0284c7;
+}
+
+body.react-19-demo-high-precedence {
+  background-color: #f0f9ff;
+}
+
+.react-19-demo-callout {
+  border: 1px solid var(--react-19-demo-accent);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background-color: rgba(2, 132, 199, 0.12);
+  color: #0f172a;
+  font-weight: 500;
+}
