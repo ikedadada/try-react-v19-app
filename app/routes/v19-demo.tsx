@@ -1,29 +1,30 @@
 import type { ReactNode } from "react";
 import { useRef } from "react";
-import { DeepMetadataComponent } from "@/components/feature/deepMetadata";
-import deepMetadataSource from "@/components/feature/deepMetadata/deepMetadataComponent.tsx?raw";
-import metadataBeforeSource from "@/components/feature/metadataBefore/metadataBefore.tsx?raw";
-import { MyInput } from "@/components/feature/myInput";
-import myInputSource from "@/components/feature/myInput/myInput.tsx?raw";
-import { OptimisticCommentList } from "@/components/feature/optimisticCommentList";
-import optimisticSource from "@/components/feature/optimisticCommentList/optimisticCommentList.tsx?raw";
-import { OptimisticCommentListBefore } from "@/components/feature/optimisticCommentListBefore";
-import optimisticBeforeSource from "@/components/feature/optimisticCommentListBefore/optimisticCommentListBefore.tsx?raw";
-import { LegacyInputBefore } from "@/components/feature/refLegacyInput";
-import refLegacySource from "@/components/feature/refLegacyInput/refLegacyInput.tsx?raw";
-import { UpdateNameAfter } from "@/components/feature/updateNameAfter";
-import updateNameAfterSource from "@/components/feature/updateNameAfter/updateNameAfter.tsx?raw";
-import { UpdateNameBefore } from "@/components/feature/updateNameBefore";
-import updateNameBeforeSource from "@/components/feature/updateNameBefore/updateNameBefore.tsx?raw";
+import { MetadataAfterHoisting } from "@/components/feature/metadataAfterHoisting";
+import metadataAfterHoistingSource from "@/components/feature/metadataAfterHoisting/deepMetadataComponent.tsx?raw";
+import { MetadataBeforeEffect } from "@/components/feature/metadataBeforeEffect";
+import metadataBeforeEffectSource from "@/components/feature/metadataBeforeEffect/metadataBefore.tsx?raw";
+import { InputAfterRefProp } from "@/components/feature/inputAfterRefProp";
+import inputAfterRefPropSource from "@/components/feature/inputAfterRefProp/myInput.tsx?raw";
+import { InputBeforeForwardRef } from "@/components/feature/inputBeforeForwardRef";
+import inputBeforeForwardRefSource from "@/components/feature/inputBeforeForwardRef/refLegacyInput.tsx?raw";
+import { CommentsAfterOptimistic } from "@/components/feature/commentsAfterOptimistic";
+import commentsAfterOptimisticSource from "@/components/feature/commentsAfterOptimistic/optimisticCommentList.tsx?raw";
+import { CommentsBeforeManualRollback } from "@/components/feature/commentsBeforeManualRollback";
+import commentsBeforeManualRollbackSource from "@/components/feature/commentsBeforeManualRollback/optimisticCommentListBefore.tsx?raw";
+import { NameAfterUseActionState } from "@/components/feature/nameAfterUseActionState";
+import nameAfterUseActionStateSource from "@/components/feature/nameAfterUseActionState/updateNameAfter.tsx?raw";
+import { NameBeforeManualState } from "@/components/feature/nameBeforeManualState";
+import nameBeforeManualStateSource from "@/components/feature/nameBeforeManualState/updateNameBefore.tsx?raw";
 
-const beforeActionSnippet = updateNameBeforeSource;
-const afterActionSnippet = updateNameAfterSource;
-const beforeRefSnippet = refLegacySource;
-const afterRefSnippet = myInputSource;
-const optimisticBeforeSnippet = optimisticBeforeSource;
-const optimisticSnippet = optimisticSource;
-const metadataBeforeSnippet = metadataBeforeSource;
-const metadataSnippet = deepMetadataSource;
+const beforeActionSnippet = nameBeforeManualStateSource;
+const afterActionSnippet = nameAfterUseActionStateSource;
+const beforeRefSnippet = inputBeforeForwardRefSource;
+const afterRefSnippet = inputAfterRefPropSource;
+const optimisticBeforeSnippet = commentsBeforeManualRollbackSource;
+const optimisticSnippet = commentsAfterOptimisticSource;
+const metadataBeforeSnippet = metadataBeforeEffectSource;
+const metadataSnippet = metadataAfterHoistingSource;
 
 export default function V19DemoRoute() {
   return (
@@ -48,10 +49,10 @@ export default function V19DemoRoute() {
         />
         <div className="grid gap-6 md:grid-cols-2">
           <DemoColumn label="Before React 19" code={beforeActionSnippet}>
-            <UpdateNameBefore />
+            <NameBeforeManualState />
           </DemoColumn>
           <DemoColumn label="After React 19" code={afterActionSnippet}>
-            <UpdateNameAfter />
+            <NameAfterUseActionState />
           </DemoColumn>
         </div>
       </section>
@@ -63,10 +64,10 @@ export default function V19DemoRoute() {
         />
         <div className="grid gap-6 md:grid-cols-2">
           <DemoColumn label="Before React 19" code={optimisticBeforeSnippet}>
-            <OptimisticCommentListBefore />
+            <CommentsBeforeManualRollback />
           </DemoColumn>
           <DemoColumn label="After React 19" code={optimisticSnippet}>
-            <OptimisticCommentList />
+            <CommentsAfterOptimistic />
           </DemoColumn>
         </div>
       </section>
@@ -81,7 +82,7 @@ export default function V19DemoRoute() {
             <RefBeforeDemo />
           </DemoColumn>
           <DemoColumn label="After React 19" code={afterRefSnippet}>
-            <RefDemo />
+            <RefAfterDemo />
           </DemoColumn>
         </div>
       </section>
@@ -98,7 +99,7 @@ export default function V19DemoRoute() {
             </div>
           </DemoColumn>
           <DemoColumn label="After React 19" code={metadataSnippet}>
-            <DeepMetadataComponent />
+            <MetadataAfterHoisting />
           </DemoColumn>
         </div>
       </section>
@@ -158,7 +159,7 @@ function RefBeforeDemo() {
 
   return (
     <div className="space-y-3">
-      <LegacyInputBefore
+      <InputBeforeForwardRef
         ref={inputRef}
         className="w-full rounded border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500"
         placeholder="forwardRef で受け取る必要がありました"
@@ -187,12 +188,15 @@ function RefBeforeDemo() {
   );
 }
 
-function RefDemo() {
+function RefAfterDemo() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="space-y-3">
-      <MyInput ref={inputRef} placeholder="ref を直接渡せます" />
+      <InputAfterRefProp
+        ref={inputRef}
+        placeholder="ref を props として渡せます"
+      />
       <div className="flex gap-2">
         <button
           className="inline-flex items-center justify-center rounded bg-purple-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"

@@ -1,1 +1,0 @@
-export { MetadataBefore } from "./metadataBefore";
