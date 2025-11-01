@@ -1,1 +1,0 @@
-export { MetadataBeforeEffect } from "./metadataBefore";

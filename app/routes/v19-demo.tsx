@@ -1,51 +1,27 @@
-import { Info } from "lucide-react";
-import type { ReactNode } from "react";
-import { useRef } from "react";
-import { CommentsAfterOptimistic } from "@/components/feature/commentsAfterOptimistic";
-import commentsAfterOptimisticSource from "@/components/feature/commentsAfterOptimistic/optimisticCommentList.tsx?raw";
-import { CommentsBeforeManualRollback } from "@/components/feature/commentsBeforeManualRollback";
-import commentsBeforeManualRollbackSource from "@/components/feature/commentsBeforeManualRollback/optimisticCommentListBefore.tsx?raw";
-import { InputAfterRefProp } from "@/components/feature/inputAfterRefProp";
-import inputAfterRefPropSource from "@/components/feature/inputAfterRefProp/myInput.tsx?raw";
-import { InputBeforeForwardRef } from "@/components/feature/inputBeforeForwardRef";
-import inputBeforeForwardRefSource from "@/components/feature/inputBeforeForwardRef/refLegacyInput.tsx?raw";
-import { MetadataAfterHoisting } from "@/components/feature/metadataAfterHoisting";
-import metadataAfterHoistingSource from "@/components/feature/metadataAfterHoisting/deepMetadataComponent.tsx?raw";
-// biome-ignore lint/correctness/noUnusedImports: <this is reference code>
-import { MetadataBeforeEffect } from "@/components/feature/metadataBeforeEffect";
-import metadataBeforeEffectSource from "@/components/feature/metadataBeforeEffect/metadataBefore.tsx?raw";
-import { NameAfterUseActionState } from "@/components/feature/nameAfterUseActionState";
-import nameAfterUseActionStateSource from "@/components/feature/nameAfterUseActionState/updateNameAfter.tsx?raw";
-import { NameBeforeManualState } from "@/components/feature/nameBeforeManualState";
-import nameBeforeManualStateSource from "@/components/feature/nameBeforeManualState/updateNameBefore.tsx?raw";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { CodeBlockClient } from "@/components/CodeBlock.client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+import { CommentsAfterOptimistic } from "@/components/feature/CommentsAfterOptimistic";
+import optimisticSnippet from "@/components/feature/CommentsAfterOptimistic/CommentsAfterOptimistic.tsx?raw";
+import { CommentsBeforeManualRollback } from "@/components/feature/CommentsBeforeManualRollback";
+import optimisticBeforeSnippet from "@/components/feature/CommentsBeforeManualRollback/CommentsBeforeManualRollback.tsx?raw";
+import afterRefSnippet from "@/components/feature/InputAfterRefProp/InputAfterRefProp.tsx?raw";
+import beforeRefSnippet from "@/components/feature/InputBeforeForwardRef/InputBeforeForwardRef.tsx?raw";
+import { MetadataAfterHoisting } from "@/components/feature/MetadataAfterHoisting";
+import metadataSnippet from "@/components/feature/MetadataAfterHoisting/MetadataAfterHoisting.tsx?raw";
 
-const beforeActionSnippet = nameBeforeManualStateSource;
-const afterActionSnippet = nameAfterUseActionStateSource;
-const beforeRefSnippet = inputBeforeForwardRefSource;
-const afterRefSnippet = inputAfterRefPropSource;
-const optimisticBeforeSnippet = commentsBeforeManualRollbackSource;
-const optimisticSnippet = commentsAfterOptimisticSource;
-const metadataBeforeSnippet = metadataBeforeEffectSource;
-const metadataSnippet = metadataAfterHoistingSource;
+import {
+  // biome-ignore lint/correctness/noUnusedImports: <reference code>
+  MetadataBeforeEffect,
+  MetadataBeforeEffectCard,
+} from "@/components/feature/MetadataBeforeEffect";
+import metadataBeforeSnippet from "@/components/feature/MetadataBeforeEffect/MetadataBeforeEffect.tsx?raw";
+import { NameAfterUseActionState } from "@/components/feature/NameAfterUseActionState";
+import afterActionSnippet from "@/components/feature/NameAfterUseActionState/NameAfterUseActionState.tsx?raw";
+import { NameBeforeManualState } from "@/components/feature/NameBeforeManualState";
+import beforeActionSnippet from "@/components/feature/NameBeforeManualState/NameBeforeManualState.tsx?raw";
+import { RefAfterRefProp } from "@/components/feature/RefAfterRefProp";
+import { RefBeforeForwardRef } from "@/components/feature/RefBeforeForwardRef";
+import { CodeComparisonAccordion } from "@/components/layout/CodeComparisonAccordion";
+import { DemoColumn } from "@/components/layout/DemoColumn";
+import { SectionTitle } from "@/components/layout/SectionTitle";
 
 export default function V19DemoRoute() {
   return (
@@ -76,7 +52,7 @@ export default function V19DemoRoute() {
             <NameAfterUseActionState />
           </DemoColumn>
         </div>
-        <CodeAccordion
+        <CodeComparisonAccordion
           beforeLabel="Before React 19"
           beforeCode={beforeActionSnippet}
           afterLabel="After React 19"
@@ -97,7 +73,7 @@ export default function V19DemoRoute() {
             <CommentsAfterOptimistic />
           </DemoColumn>
         </div>
-        <CodeAccordion
+        <CodeComparisonAccordion
           beforeLabel="Before React 19"
           beforeCode={optimisticBeforeSnippet}
           afterLabel="After React 19"
@@ -112,13 +88,13 @@ export default function V19DemoRoute() {
         />
         <div className="grid gap-6 md:grid-cols-2">
           <DemoColumn label="Before React 19">
-            <RefBeforeDemo />
+            <RefBeforeForwardRef />
           </DemoColumn>
           <DemoColumn label="After React 19">
-            <RefAfterDemo />
+            <RefAfterRefProp />
           </DemoColumn>
         </div>
-        <CodeAccordion
+        <CodeComparisonAccordion
           beforeLabel="Before React 19"
           beforeCode={beforeRefSnippet}
           afterLabel="After React 19"
@@ -133,30 +109,13 @@ export default function V19DemoRoute() {
         />
         <div className="grid gap-6 md:grid-cols-2">
           <DemoColumn label="Before React 19">
-            <Card>
-              <CardHeader>
-                <CardTitle>命令的なメタデータ管理</CardTitle>
-                <CardDescription>
-                  useEffect で document.title や meta
-                  タグを直接操作する、これまでの代表的な手法です。
-                </CardDescription>
-              </CardHeader>
-              <Separator />
-              <CardContent>
-                <Alert variant="destructive">
-                  <Info />
-                  <AlertTitle>
-                    メタデータの変更を副作用として手動で管理する必要がありました。
-                  </AlertTitle>
-                </Alert>
-              </CardContent>
-            </Card>
+            <MetadataBeforeEffectCard />
           </DemoColumn>
           <DemoColumn label="After React 19">
             <MetadataAfterHoisting />
           </DemoColumn>
         </div>
-        <CodeAccordion
+        <CodeComparisonAccordion
           beforeLabel="Before React 19"
           beforeCode={metadataBeforeSnippet}
           afterLabel="After React 19"
@@ -164,178 +123,5 @@ export default function V19DemoRoute() {
         />
       </section>
     </main>
-  );
-}
-
-type SectionTitleProps = {
-  title: string;
-  description: string;
-};
-
-function SectionTitle({ title, description }: SectionTitleProps) {
-  return (
-    <div className="space-y-2 text-center md:text-left">
-      <h2 className="text-2xl font-semibold text-foreground">{title}</h2>
-      <p className="text-sm text-muted-foreground">{description}</p>
-    </div>
-  );
-}
-
-type DemoColumnProps = {
-  label: string;
-  children: ReactNode;
-};
-
-function DemoColumn({ label, children }: DemoColumnProps) {
-  const isAfter = label.toLowerCase().includes("after");
-  return (
-    <div className="space-y-3">
-      <Badge
-        variant="outline"
-        className={cn(
-          "px-3 py-1 text-xs font-semibold uppercase tracking-wide",
-          !isAfter && "text-muted-foreground",
-        )}
-      >
-        {label}
-      </Badge>
-      <div className="space-y-3">
-        <div className="min-h-0">{children}</div>
-      </div>
-    </div>
-  );
-}
-
-type CodeAccordionProps = {
-  beforeLabel: string;
-  beforeCode: string;
-  afterLabel: string;
-  afterCode: string;
-};
-
-function CodeAccordion({
-  beforeLabel,
-  beforeCode,
-  afterLabel,
-  afterCode,
-}: CodeAccordionProps) {
-  return (
-    <Accordion type="single" collapsible className="rounded-xl border">
-      <AccordionItem value="code">
-        <AccordionTrigger className="px-4 py-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          実装コードを表示
-        </AccordionTrigger>
-        <AccordionContent className="px-4 pb-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Badge
-                variant="outline"
-                className="px-3 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-              >
-                {beforeLabel}
-              </Badge>
-              <CodeBlockClient code={beforeCode} />
-            </div>
-            <div className="space-y-2">
-              <Badge
-                variant="outline"
-                className="px-3 py-1 text-xs font-semibold uppercase tracking-wide"
-              >
-                {afterLabel}
-              </Badge>
-              <CodeBlockClient code={afterCode} />
-            </div>
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
-}
-
-function RefBeforeDemo() {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>forwardRef を使った受け渡し</CardTitle>
-        <CardDescription>
-          ref を渡すには forwardRef
-          でラップしたコンポーネントを経由する必要がありました。
-        </CardDescription>
-      </CardHeader>
-      <Separator />
-      <CardContent className="space-y-3">
-        <InputBeforeForwardRef
-          ref={inputRef}
-          className="w-full"
-          placeholder="forwardRef で受け取る必要がありました"
-        />
-        <div className="flex justify-end gap-2">
-          <Button
-            onClick={() => inputRef.current?.focus()}
-            size="sm"
-            variant="secondary"
-            type="button"
-          >
-            フォーカス
-          </Button>
-          <Button
-            onClick={() => {
-              if (inputRef.current) {
-                inputRef.current.value = "";
-              }
-            }}
-            variant="outline"
-            size="sm"
-          >
-            クリア
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function RefAfterDemo() {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>ref を props として渡す</CardTitle>
-        <CardDescription>
-          forwardRef なしで ref
-          を受け取れるため、ボイラープレートが大幅に減ります。
-        </CardDescription>
-      </CardHeader>
-      <Separator />
-      <CardContent className="space-y-3">
-        <InputAfterRefProp
-          ref={inputRef}
-          placeholder="ref を props として渡せます"
-        />
-        <div className="flex justify-end gap-2">
-          <Button
-            onClick={() => inputRef.current?.focus()}
-            variant="secondary"
-            size="sm"
-          >
-            フォーカス
-          </Button>
-          <Button
-            onClick={() => {
-              if (inputRef.current) {
-                inputRef.current.value = "";
-              }
-            }}
-            size="sm"
-            variant="outline"
-          >
-            クリア
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
   );
 }
