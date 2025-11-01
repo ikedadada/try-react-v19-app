@@ -1,10 +1,23 @@
+import { AlertCircle, Info } from "lucide-react";
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { getErrorMessage } from "@/components/utils/getErrorMessage";
 import { updateUserName } from "@/lib/mock-mutations";
 
 export function NameBeforeManualState() {
-  const [savedName, setSavedName] = useState("React Router User");
+  const [savedName, setSavedName] = useState("");
   const [nameInput, setNameInput] = useState(savedName);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
@@ -25,41 +38,56 @@ export function NameBeforeManualState() {
   }
 
   return (
-    <div className="space-y-4 rounded-lg border border-slate-200 p-4 shadow-sm">
-      <form className="space-y-3" onSubmit={handleSubmit}>
-        <label className="block text-sm font-medium text-slate-700">
-          お名前
-          <input
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 text-base shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
-            name="name"
-            onChange={(event) => setNameInput(event.target.value)}
-            type="text"
-            value={nameInput}
-          />
-        </label>
-        <button
-          className="inline-flex items-center justify-center rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
-          disabled={isPending}
-          type="submit"
-        >
-          {isPending ? "更新中..." : "名前を更新"}
-        </button>
-      </form>
-      <dl className="space-y-1 text-sm">
-        <div className="flex items-center justify-between">
-          <dt className="font-medium text-slate-700">保存された名前</dt>
-          <dd className="font-semibold text-slate-900">{savedName}</dd>
-        </div>
-        <div className="flex items-center justify-between">
-          <dt className="font-medium text-slate-700">Pending状態</dt>
-          <dd className="font-mono text-xs">{String(isPending)}</dd>
-        </div>
-      </dl>
-      {error ? (
-        <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-          {error}
-        </p>
-      ) : null}
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>手動状態管理フォーム</CardTitle>
+        <CardDescription>
+          Pending 状態やエラーの追跡を useState で都度管理する従来の実装例です。
+        </CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent className="space-y-4">
+        <form className="space-y-3" onSubmit={handleSubmit}>
+          <Label className="flex flex-col items-start gap-1">
+            <span>お名前</span>
+            <Input
+              name="name"
+              onChange={(event) => setNameInput(event.target.value)}
+              placeholder="例: React 18 User"
+              value={nameInput}
+            />
+          </Label>
+          <div className="flex justify-end">
+            <Button type="submit" variant="outline" disabled={isPending}>
+              {isPending ? "更新中..." : "名前を更新"}
+            </Button>
+          </div>
+        </form>
+        {error ? (
+          <Alert variant="destructive">
+            <AlertCircle />
+            <AlertTitle>{error}</AlertTitle>
+          </Alert>
+        ) : null}
+        <Separator />
+        <dl className="flex flex-col gap-2 text-sm">
+          <div className="flex items-center justify-between">
+            <dt className="text-muted-foreground">保存された名前</dt>
+            <dd className="font-medium">{savedName}</dd>
+          </div>
+          <div className="flex items-center justify-between">
+            <dt className="text-muted-foreground">Pending状態</dt>
+            <dd className="font-mono text-xs">{String(isPending)}</dd>
+          </div>
+        </dl>
+        <Separator />
+        <Alert variant="destructive">
+          <Info />
+          <AlertTitle>
+            成功・失敗に応じたロールバックやメッセージ表示を自前で記述しています。
+          </AlertTitle>
+        </Alert>
+      </CardContent>
+    </Card>
   );
 }

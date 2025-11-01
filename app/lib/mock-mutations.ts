@@ -18,6 +18,9 @@ let nextCommentId = 1;
 
 export async function addComment(text: string) {
   await sleep(1500);
+  if (!text.trim()) {
+    throw { message: "コメントは必須です" };
+  }
 
   return {
     id: nextCommentId++,

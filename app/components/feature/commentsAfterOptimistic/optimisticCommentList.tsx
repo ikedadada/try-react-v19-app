@@ -1,11 +1,25 @@
+import { AlertCircle, CheckCircle2Icon } from "lucide-react";
 import type { FormEvent } from "react";
-import { useOptimistic, useState } from "react";
+import { startTransition, useOptimistic, useState } from "react";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import { getErrorMessage } from "@/components/utils/getErrorMessage";
 import { addComment } from "@/lib/mock-mutations";
 
 type Comment = {
   id: number;
   text: string;
-  optimistic?: boolean;
+  pending?: boolean;
 };
 
 const staticComments: Comment[] = [
@@ -25,70 +39,87 @@ export function CommentsAfterOptimistic() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const trimmed = textInput.trim();
-    if (!trimmed) {
-      setError("コメントを入力してください。");
-      return;
-    }
 
     setError(null);
     const optimisticComment: Comment = {
       id: Date.now(),
       text: trimmed,
-      optimistic: true,
+      pending: true,
     };
 
     addOptimisticComment(optimisticComment);
     setTextInput("");
 
-    try {
-      const saved = await addComment(trimmed);
-      setComments((prev) => [...prev, saved]);
-    } catch (_error) {
-      setError("コメントの追加に失敗しました。");
-    }
+    startTransition(async () => {
+      try {
+        const saved = await addComment(trimmed);
+        setComments((prev) => [...prev, saved]);
+      } catch (error) {
+        setError(getErrorMessage(error));
+      }
+    });
   }
 
   return (
-    <div className="space-y-4 rounded-lg border border-indigo-200 p-4 shadow-sm">
-      <form className="space-y-3" onSubmit={handleSubmit}>
-        <label className="block text-sm font-medium text-indigo-700">
-          新しいコメント
-          <textarea
-            className="mt-1 w-full rounded border border-indigo-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-60"
-            name="comment"
-            onChange={(event) => setTextInput(event.target.value)}
-            rows={3}
-            value={textInput}
-          />
-        </label>
-        <button
-          className="inline-flex items-center justify-center rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
-          type="submit"
-        >
-          追加
-        </button>
-      </form>
-      <ul className="space-y-2">
-        {optimisticComments.map((comment) => (
-          <li
-            key={comment.id}
-            className="rounded border border-indigo-100 bg-indigo-50 px-3 py-2 text-sm text-indigo-900"
-          >
-            <p>{comment.text}</p>
-            {comment.optimistic ? (
-              <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-indigo-700">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-indigo-500" />
-                Pending...
-              </span>
-            ) : null}
-          </li>
-        ))}
-      </ul>
-      {error ? (
-        <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-          {error}
-        </p>
-      ) : null}
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>useOptimistic によるリスト更新</CardTitle>
+        <CardDescription>
+          追加後すぐに UI
+          に反映し、結果に応じて自動的に確定・ロールバックされるパターンです。
+        </CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent className="space-y-4">
+        <form className="space-y-3" onSubmit={handleSubmit}>
+          <Label className="flex flex-col items-start gap-1">
+            <span>新しいコメント</span>
+            <Textarea
+              name="comment"
+              onChange={(event) => setTextInput(event.target.value)}
+              placeholder="コメントを入力"
+              rows={3}
+              value={textInput}
+            />
+          </Label>
+          <div className="flex justify-end">
+            <Button type="submit" variant="outline">
+              追加
+            </Button>
+          </div>
+        </form>
+        <ul className="space-y-2 text-sm">
+          {optimisticComments.map((comment) => (
+            <li
+              key={comment.id}
+              className="rounded-md border border-primary/20 bg-primary/5 px-3 py-2 text-primary"
+            >
+              <p>{comment.text}</p>
+              {comment.pending ? (
+                <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
+                  <span className="h-2 w-2 animate-ping rounded-full bg-muted-foreground" />
+                  Pending 管理中...
+                </span>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+        {error ? (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4 text-destructive" />
+            <AlertTitle className="text-sm text-destructive">
+              {error}
+            </AlertTitle>
+          </Alert>
+        ) : null}
+        <Separator />
+        <Alert>
+          <CheckCircle2Icon />
+          <AlertTitle>
+            Pending 状態は useOptimistic が自動的に確定・ロールバックします。
+          </AlertTitle>
+        </Alert>
+      </CardContent>
+    </Card>
   );
 }

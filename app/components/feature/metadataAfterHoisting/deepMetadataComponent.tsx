@@ -1,29 +1,48 @@
+import { CheckCircle2Icon } from "lucide-react";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+
 export function MetadataAfterHoisting() {
   return (
-    <section className="space-y-3 rounded-lg border border-amber-200 bg-amber-50/60 p-4 shadow-sm">
-      <div>
-        <h3 className="text-base font-semibold text-amber-900">
-          深い階層からのメタデータ
-        </h3>
-        <p className="text-sm text-amber-800">
+    <Card>
+      <CardHeader>
+        <CardTitle>深い階層からのメタデータ</CardTitle>
+        <CardDescription>
           React 19
-          では、コンポーネントツリーのどの位置からでもメタデータを宣言的に追加でき、SSR
-          では自動的にドキュメントヘッドへ巻き上げられます。
-        </p>
-      </div>
-      <div className="rounded bg-white/70 p-3 text-sm text-amber-900 shadow-inner">
-        <p>
-          このセクションでは
-          <code className="mx-1 rounded bg-amber-100 px-1 py-0.5 text-xs font-semibold">
-            &lt;title&gt;
-          </code>
-          と
-          <code className="mx-1 rounded bg-amber-100 px-1 py-0.5 text-xs font-semibold">
-            &lt;meta&gt;
-          </code>
-          を直接レンダーしています。
-        </p>
-      </div>
+          ではコンポーネントツリーの任意の位置からメタデータを宣言でき、SSR 時に
+          自動でドキュメントヘッドへ巻き上げられます。
+        </CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent className="space-y-3">
+        <Alert>
+          <CheckCircle2Icon />
+          <AlertTitle>
+            このセクションでは
+            <code className="mx-1 rounded bg-muted px-1 py-0.5 text-[11px] font-semibold">
+              &lt;title&gt;
+            </code>
+            と
+            <code className="mx-1 rounded bg-muted px-1 py-0.5 text-[11px] font-semibold">
+              &lt;meta&gt;
+            </code>
+            を直接レンダーしています。
+          </AlertTitle>
+        </Alert>
+        <Alert>
+          <CheckCircle2Icon />
+          <AlertTitle>
+            precedence を指定したスタイルシートもこの階層から宣言できます。
+          </AlertTitle>
+        </Alert>
+      </CardContent>
       <title>React 19 Metadata Demo</title>
       <meta
         content="React 19 のメタデータ hoisting と precedence 属性のデモ"
@@ -34,6 +53,6 @@ export function MetadataAfterHoisting() {
         precedence="high"
         rel="stylesheet"
       />
-    </section>
+    </Card>
   );
 }

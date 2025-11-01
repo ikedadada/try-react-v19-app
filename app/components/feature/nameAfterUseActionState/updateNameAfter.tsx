@@ -1,4 +1,17 @@
+import { AlertCircle, CheckCircle2Icon } from "lucide-react";
 import { useActionState, useState } from "react";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { getErrorMessage } from "@/components/utils/getErrorMessage";
 import { updateUserName } from "@/lib/mock-mutations";
 
@@ -11,7 +24,7 @@ const initialState: ActionState = {
 };
 
 export function NameAfterUseActionState() {
-  const [savedName, setSavedName] = useState("React 19 User");
+  const [savedName, setSavedName] = useState("");
   const [nameInput, setNameInput] = useState(savedName);
 
   const [state, submitAction, isPending] = useActionState<
@@ -31,41 +44,57 @@ export function NameAfterUseActionState() {
   }, initialState);
 
   return (
-    <div className="space-y-4 rounded-lg border border-emerald-200 p-4 shadow-sm">
-      <form action={submitAction} className="space-y-3">
-        <label className="block text-sm font-medium text-emerald-700">
-          お名前
-          <input
-            className="mt-1 w-full rounded border border-emerald-300 px-3 py-2 text-base shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
-            name="name"
-            onChange={(event) => setNameInput(event.target.value)}
-            type="text"
-            value={nameInput}
-          />
-        </label>
-        <button
-          className="inline-flex items-center justify-center rounded bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
-          disabled={isPending}
-          type="submit"
-        >
-          {isPending ? "自動で Pending 中..." : "名前を更新"}
-        </button>
-      </form>
-      <dl className="space-y-1 text-sm">
-        <div className="flex items-center justify-between">
-          <dt className="font-medium text-emerald-700">保存された名前</dt>
-          <dd className="font-semibold text-emerald-900">{savedName}</dd>
-        </div>
-        <div className="flex items-center justify-between">
-          <dt className="font-medium text-emerald-700">Pending状態</dt>
-          <dd className="font-mono text-xs">{String(isPending)}</dd>
-        </div>
-      </dl>
-      {state.error ? (
-        <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
-          {state.error}
-        </p>
-      ) : null}
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>useActionState によるフォーム</CardTitle>
+        <CardDescription>
+          Pending 管理とエラー処理をフレームワークに委ねる React 19
+          の推奨スタイルです。
+        </CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent className="space-y-4">
+        <form action={submitAction} className="space-y-3">
+          <Label className="flex flex-col items-start gap-1">
+            <span>お名前</span>
+            <Input
+              name="name"
+              onChange={(event) => setNameInput(event.target.value)}
+              placeholder="例: React 19 User"
+              value={nameInput}
+            />
+          </Label>
+          <div className="flex justify-end">
+            <Button type="submit" variant="outline" disabled={isPending}>
+              {isPending ? "自動で Pending 中..." : "名前を更新"}
+            </Button>
+          </div>
+        </form>
+        {state.error ? (
+          <Alert variant="destructive">
+            <AlertCircle />
+            <AlertTitle>{state.error}</AlertTitle>
+          </Alert>
+        ) : null}
+        <Separator />
+        <dl className="flex flex-col gap-2 text-sm">
+          <div className="flex items-center justify-between">
+            <dt className="text-muted-foreground">保存された名前</dt>
+            <dd className="font-medium">{savedName}</dd>
+          </div>
+          <div className="flex items-center justify-between">
+            <dt className="text-muted-foreground">Pending状態</dt>
+            <dd className="font-mono text-xs">{String(isPending)}</dd>
+          </div>
+        </dl>
+        <Separator />
+        <Alert>
+          <CheckCircle2Icon />
+          <AlertTitle>
+            Pending 状態やエラーの値は useActionState から自動提供されます。
+          </AlertTitle>
+        </Alert>
+      </CardContent>
+    </Card>
   );
 }
