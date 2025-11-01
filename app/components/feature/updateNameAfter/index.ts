@@ -1,0 +1,1 @@
+export { UpdateNameAfter } from "./updateNameAfter";

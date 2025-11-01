@@ -1,0 +1,1 @@
+export { DeepMetadataComponent } from "./deepMetadataComponent";
