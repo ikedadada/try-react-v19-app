@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 import { CommentsAfterOptimistic } from "@/components/feature/CommentsAfterOptimistic";
 import optimisticSnippet from "@/components/feature/CommentsAfterOptimistic/CommentsAfterOptimistic.tsx?raw";
 import { CommentsBeforeManualRollback } from "@/components/feature/CommentsBeforeManualRollback";
@@ -22,6 +24,7 @@ import { RefBeforeForwardRef } from "@/components/feature/RefBeforeForwardRef";
 import { CodeComparisonAccordion } from "@/components/layout/CodeComparisonAccordion";
 import { DemoColumn } from "@/components/layout/DemoColumn";
 import { SectionTitle } from "@/components/layout/SectionTitle";
+import { Button } from "@/components/ui/button";
 
 export default function V19DemoRoute() {
   return (
@@ -37,6 +40,11 @@ export default function V19DemoRoute() {
           Actions、useOptimistic、ref as prop、メタデータの巻き上げなど React 19
           のハイライトをひとつのページで体験できます。
         </p>
+        <div className="flex flex-wrap justify-center gap-3">
+          <Button asChild variant="outline">
+            <Link to="/react-19-2">React 19.2 アップデートを見る</Link>
+          </Button>
+        </div>
       </header>
 
       <section className="space-y-6">
@@ -48,7 +56,7 @@ export default function V19DemoRoute() {
           <DemoColumn label="Before React 19">
             <NameBeforeManualState />
           </DemoColumn>
-          <DemoColumn label="After React 19">
+          <DemoColumn label="After React 19" variant="after">
             <NameAfterUseActionState />
           </DemoColumn>
         </div>
@@ -69,7 +77,7 @@ export default function V19DemoRoute() {
           <DemoColumn label="Before React 19">
             <CommentsBeforeManualRollback />
           </DemoColumn>
-          <DemoColumn label="After React 19">
+          <DemoColumn label="After React 19" variant="after">
             <CommentsAfterOptimistic />
           </DemoColumn>
         </div>
@@ -90,7 +98,7 @@ export default function V19DemoRoute() {
           <DemoColumn label="Before React 19">
             <RefBeforeForwardRef />
           </DemoColumn>
-          <DemoColumn label="After React 19">
+          <DemoColumn label="After React 19" variant="after">
             <RefAfterRefProp />
           </DemoColumn>
         </div>
@@ -111,7 +119,7 @@ export default function V19DemoRoute() {
           <DemoColumn label="Before React 19">
             <MetadataBeforeEffectCard />
           </DemoColumn>
-          <DemoColumn label="After React 19">
+          <DemoColumn label="After React 19" variant="after">
             <MetadataAfterHoisting />
           </DemoColumn>
         </div>
