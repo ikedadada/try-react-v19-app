@@ -1,5 +1,3 @@
-import { Link } from "react-router";
-
 import { ActivityAfterActivityBoundary } from "@/components/feature/ActivityAfterActivityBoundary";
 import afterActivitySnippet from "@/components/feature/ActivityAfterActivityBoundary/ActivityAfterActivityBoundary.tsx?raw";
 import { ActivityBeforeManualToggle } from "@/components/feature/ActivityBeforeManualToggle";
@@ -19,10 +17,7 @@ import { Button } from "@/components/ui/button";
 export default function React192Route() {
   return (
     <main className="mx-auto max-w-6xl space-y-14 px-4 py-10">
-      <header className="space-y-4 text-center">
-        <p className="text-sm font-semibold uppercase tracking-wide text-primary">
-          React 19.2 Update
-        </p>
+      <section className="space-y-4 text-center">
         <h1 className="text-3xl font-bold text-foreground">
           React 19.2 の新機能デモ
         </h1>
@@ -31,9 +26,6 @@ export default function React192Route() {
           の主要アップデートを Before / After で体験できます。
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Button asChild variant="outline">
-            <Link to="/">React 19 デモへ戻る</Link>
-          </Button>
           <Button asChild>
             <a
               href="https://react.dev/blog/2025/10/01/react-19-2"
@@ -44,7 +36,7 @@ export default function React192Route() {
             </a>
           </Button>
         </div>
-      </header>
+      </section>
 
       <section className="space-y-6">
         <SectionTitle

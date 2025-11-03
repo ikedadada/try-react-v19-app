@@ -1,5 +1,3 @@
-import { Link } from "react-router";
-
 import { CommentsAfterOptimistic } from "@/components/feature/CommentsAfterOptimistic";
 import optimisticSnippet from "@/components/feature/CommentsAfterOptimistic/CommentsAfterOptimistic.tsx?raw";
 import { CommentsBeforeManualRollback } from "@/components/feature/CommentsBeforeManualRollback";
@@ -29,10 +27,7 @@ import { Button } from "@/components/ui/button";
 export default function V19DemoRoute() {
   return (
     <main className="mx-auto max-w-6xl space-y-12 px-4 py-10">
-      <header className="space-y-3 text-center">
-        <p className="text-sm font-semibold uppercase tracking-wide text-primary">
-          React 19 Quick Tour
-        </p>
+      <section className="space-y-3 text-center">
         <h1 className="text-3xl font-bold text-foreground">
           React 19 の新機能を Before / After で比較
         </h1>
@@ -41,11 +36,17 @@ export default function V19DemoRoute() {
           のハイライトをひとつのページで体験できます。
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Button asChild variant="outline">
-            <Link to="/react-19-2">React 19.2 アップデートを見る</Link>
+          <Button asChild>
+            <a
+              href="https://react.dev/blog/2024/12/05/react-19"
+              target="_blank"
+              rel="noreferrer"
+            >
+              公式ブログを読む
+            </a>
           </Button>
         </div>
-      </header>
+      </section>
 
       <section className="space-y-6">
         <SectionTitle
