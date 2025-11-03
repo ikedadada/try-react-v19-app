@@ -14,7 +14,7 @@ export async function updateUserName(newName: string) {
   };
 }
 
-let nextCommentId = 1;
+let nextCommentId = 3;
 
 export async function addComment(text: string) {
   await sleep(1500);
