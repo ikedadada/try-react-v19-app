@@ -10,7 +10,7 @@ export function MainHeader() {
         <div className="flex h-(--header-height) items-center py-4 flex-start gap-4">
           <div className="flex items-center">
             <img src={icon} alt="React 19.2 Logo" width={24} height={24} />
-            <span className="ml-3 text-l font-bold text-foreground">
+            <span className="ml-3 text-lg font-bold text-foreground">
               Try React Update
             </span>
           </div>
